@@ -3,12 +3,12 @@ import { formatDate } from './dateUtils'
 import { formatCurrency } from './formatCurrency'
 
 export function exportToCSV(expenses: Expense[], filename = 'expenses'): void {
-  const headers = ['Date', 'Description', 'Category', 'Amount']
+  const headers = ['Date', 'Category', 'Amount', 'Description']
   const rows = expenses.map((e) => [
     formatDate(e.date),
-    `"${e.description.replace(/"/g, '""')}"`,
     e.category,
-    formatCurrency(e.amount),
+    e.amount.toFixed(2),
+    `"${e.description.replace(/"/g, '""')}"`,
   ])
 
   const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')

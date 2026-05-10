@@ -10,10 +10,11 @@ import { Button } from '@/components/ui/Button'
 import { ExpenseForm } from '@/components/expenses/ExpenseForm'
 import { Modal } from '@/components/ui/Modal'
 import { useState } from 'react'
-import { Plus, Sparkles } from 'lucide-react'
+import { Plus, Sparkles, Download } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { SAMPLE_EXPENSES } from '@/utils/sampleData'
+import { exportToCSV } from '@/utils/exportCSV'
 import { STORAGE_KEY } from '@/lib/constants'
 
 export default function DashboardPage() {
@@ -91,10 +92,16 @@ export default function DashboardPage() {
               {expenses.length} expenses tracked
             </p>
           </div>
-          <Button variant="primary" size="md" onClick={() => setShowForm(true)}>
-            <Plus size={16} />
-            Add Expense
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="md" onClick={() => exportToCSV(expenses)}>
+              <Download size={16} />
+              Export Data
+            </Button>
+            <Button variant="primary" size="md" onClick={() => setShowForm(true)}>
+              <Plus size={16} />
+              Add Expense
+            </Button>
+          </div>
         </div>
 
         <SummaryCards
