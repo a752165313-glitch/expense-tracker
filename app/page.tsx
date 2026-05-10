@@ -10,16 +10,18 @@ import { Button } from '@/components/ui/Button'
 import { ExpenseForm } from '@/components/expenses/ExpenseForm'
 import { Modal } from '@/components/ui/Modal'
 import { useState } from 'react'
-import { Plus, Sparkles } from 'lucide-react'
+import { Plus, Sparkles, UploadCloud } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { SAMPLE_EXPENSES } from '@/utils/sampleData'
 import { STORAGE_KEY } from '@/lib/constants'
+import { ExportModal } from '@/components/dashboard/ExportModal'
 
 export default function DashboardPage() {
   const { expenses, isLoaded, stats, categorySummaries, monthlySummaries, pieData, addExpense } =
     useExpenseContext()
   const [showForm, setShowForm] = useState(false)
+  const [showExport, setShowExport] = useState(false)
 
   const handleAdd = (data: any) => {
     addExpense(data)
@@ -91,10 +93,16 @@ export default function DashboardPage() {
               {expenses.length} expenses tracked
             </p>
           </div>
-          <Button variant="primary" size="md" onClick={() => setShowForm(true)}>
-            <Plus size={16} />
-            Add Expense
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="md" onClick={() => setShowExport(true)}>
+              <UploadCloud size={16} />
+              Export
+            </Button>
+            <Button variant="primary" size="md" onClick={() => setShowForm(true)}>
+              <Plus size={16} />
+              Add Expense
+            </Button>
+          </div>
         </div>
 
         <SummaryCards
@@ -118,6 +126,12 @@ export default function DashboardPage() {
       <Modal isOpen={showForm} onClose={() => setShowForm(false)} title="Add New Expense">
         <ExpenseForm onSubmit={handleAdd} onCancel={() => setShowForm(false)} />
       </Modal>
+
+      <ExportModal
+        isOpen={showExport}
+        onClose={() => setShowExport(false)}
+        expenses={expenses}
+      />
     </AppShell>
   )
 }
