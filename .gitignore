@@ -13,7 +13,8 @@ out/
 .env.production.local
 
 # claude
-.claude/
+.claude/*
+!.claude/commands/
 
 # misc
 .DS_Store
